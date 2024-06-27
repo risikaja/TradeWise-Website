@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="home style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>TradeWise</title>
+</head>
+
+<body>
+    <div class="banner">
+        <div class="navbar">
+            <a href="index.html"><img
+                    src="Green Modern Money Vector Design. Cashback Service . Business And Finance Icon Logo Template.png"
+                    class="logo"></a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="exchange.html">Exchange</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="exchange points.html">Exchange points</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="container">
+                <div class="column">
+                    <h1>Exchange <br>
+                        <p id="with">with</p> <br> Confidence
+                    </h1>
+                    <P>Our platform transcends borders, allowing you to trade beyond boundaries</P>
+                    <div class="button">
+                        <a href="exchange.html"><button type="button"><span></span>Start Trading Now</button></a>
+                        <a href="news.html"><button type="button"><span></span>Read Latest News</button></a>
+                    </div>
+                </div>
+                <div class="column">
+                    <canvas id="myChart"></canvas>
+                    <div id="eur"></div>
+                    <div id="cad"></div>
+                    <div id="chf"></div>
+                    <div id="gbp"></div>
+
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Currency</th>
+                            <th>Amount</th>
+                            
+                        </tr>
+                        <tr>
+                            <td><img src="https://cdn3.iconfinder.com/data/icons/142-mini-country-flags-16x16px/32/flag-usa2x.png" alt=""></td>
+                            <td>US Dollar</td>
+                            <td>1.000</td>
+
+                        </tr>
+                        <tr>
+                            <td><img src="https://cdn3.iconfinder.com/data/icons/142-mini-country-flags-16x16px/32/flag-european-union2x.png"
+                                    alt=""></td>
+                            <td>Euro</td>
+                            <td id="eur1">1.000</td>
+                           
+                        </tr>
+                        <tr>
+                            <td><img src="https://cdn3.iconfinder.com/data/icons/142-mini-country-flags-16x16px/32/flag-canada2x.png"
+                                    alt=""></td>
+                            <td>Canadian Dollar</td>
+                            <td id="cad1">1.000</td>
+                           
+                        </tr>
+                        <tr>
+                            <td><img src="https://cdn3.iconfinder.com/data/icons/142-mini-country-flags-16x16px/32/flag-switzerland2x.png"
+                                    alt=""> </td> <td> Swiss Franc</td>
+                            <td id="chf1">1.000</td>
+                           
+                        </tr>
+                        <tr>
+                            <td><img src="https://cdn3.iconfinder.com/data/icons/142-mini-country-flags-16x16px/32/flag-united-kingdom2x.png"
+                                    alt=""></td>
+                            <td>British Pound</td>
+                            <td id="gbp1">1.000</td>
+                            
+                        </tr>
+                    </table>
+                  
+<div class="tradingview-widget-container">
+    <div class="tradingview-widget-container__widget"></div>
+    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+    {
+    "symbol": "FX:EURUSD",
+    "width": 370,
+    "height": 320,
+    "locale": "en",
+    "dateRange": "12M",
+    "colorTheme": "dark",
+    "isTransparent": false,
+    "autosize": false,
+    "largeChartUrl": ""
+  }
+    </script>
+  </div>
+ 
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+<script>
+      
+        
+        async function fetchData() {
+            let data = [1];
+            const host = 'api.frankfurter.app';
+            let resp = await fetch(`https://${host}/latest?amount=1&from=USD&to=EUR`);
+            const data1 = await resp.json();
+            data.push(data1.rates.EUR);
+            resp = await fetch(`https://${host}/latest?amount=1&from=USD&to=CAD`);
+            const data2 = await resp.json();
+            data.push(data2.rates.CAD);
+            resp = await fetch(`https://${host}/latest?amount=1&from=USD&to=CHF`);
+            const data3 = await resp.json();
+            data.push(data3.rates.CHF);
+            resp = await fetch(`https://${host}/latest?amount=1&from=USD&to=GBP`);
+            const data4 = await resp.json();
+            data.push(data4.rates.GBP);
+            document.getElementById("eur1").innerHTML = data[1]
+            document.getElementById("cad1").innerHTML = data[2]
+            document.getElementById("chf1").innerHTML = data[3]
+            document.getElementById("gbp1").innerHTML = data[4]
+            const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['USD', 'EUR', 'CAD', 'CHF', 'GBP',],
+                    datasets: [{
+                        label: 'Exchange ratio',
+                        data: data,
+                        tension: 0.15,
+                        backgroundColor: 'rgb(252,209,0)',
+
+                    }]
+                },
+                options: {
+                    aspectRatio: 2.8,
+
+                    plugins: {
+                        legend: {
+                            color:'white',
+                            labels: {
+                                color: 'white',
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'white'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'white'
+                            }
+                        }
+
+
+
+
+                    }
+                }
+            });
+        }
+        fetchData();
+
+
+        
+
+
+    </script>
+</body>
+
+</html>
